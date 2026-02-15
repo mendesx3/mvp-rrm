@@ -1,6 +1,5 @@
 package com.mvp.infrastructure;
 
-import com.mvp.core.domain.Product;
 import com.mvp.core.ports.InventoryGateway;
 import com.mvp.core.ports.ProductRepository;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class InMemoryInventoryGateway implements InventoryGateway {
     public boolean checkAndDecrease(UUID productId, int quantity) {
         return productRepository.findById(productId)
                 .map(p -> {
-                    if (p.getStock() < quantity) return false;
+                    if (p.getStockQuantity() < quantity) return false;
                     p.decreaseStock(quantity);
                     productRepository.save(p);
                     return true;

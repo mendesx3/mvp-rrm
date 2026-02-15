@@ -1,6 +1,7 @@
 package com.mvp.adapters.api;
 
-import com.mvp.adapters.api.dto.*;
+import com.mvp.adapters.api.dto.CreateProductRequest;
+import com.mvp.adapters.api.dto.ProductResponse;
 import com.mvp.core.domain.Product;
 import com.mvp.core.usecase.CreateProduct;
 import com.mvp.core.usecase.SearchProducts;
@@ -10,10 +11,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -33,8 +39,14 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Produto criado com sucesso",
                     content = @Content(schema = @Schema(implementation = ProductResponse.class)))
     })
-    public ProductResponse create(@RequestBody CreateProductRequest request) {
-        Product product = createProduct.execute(request.name(), request.description(), request.price(), request.categoryId(), request.stock());
+    public ProductResponse create(@Valid @RequestBody CreateProductRequest request) {
+        Product product = createProduct.execute(
+                request.name(),
+                request.description(),
+                request.costPrice(),
+                request.salePrice(),
+                request.stockQuantity()
+        );
         return toResponse(product);
     }
 
@@ -43,10 +55,17 @@ public class ProductController {
     @ApiResponse(responseCode = "200", description = "Lista de produtos",
             content = @Content(schema = @Schema(implementation = ProductResponse.class)))
     public List<ProductResponse> search(@RequestParam("q") String query) {
-        return searchProducts.execute(query).stream().map(this::toResponse).collect(Collectors.toList());
+        return searchProducts.execute(query).stream().map(this::toResponse).toList();
     }
 
     private ProductResponse toResponse(Product p) {
-        return new ProductResponse(p.getId(), p.getName(), p.getDescription(), p.getPrice().amount(), p.getCategoryId(), p.getStock());
+        return new ProductResponse(
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getCostPrice(),
+                p.getSalePrice(),
+                p.getStockQuantity()
+        );
     }
 }

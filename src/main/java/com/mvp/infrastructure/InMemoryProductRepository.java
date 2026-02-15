@@ -2,13 +2,13 @@ package com.mvp.infrastructure;
 
 import com.mvp.core.domain.Product;
 import com.mvp.core.ports.ProductRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-@Repository
 public class InMemoryProductRepository implements ProductRepository {
     private final Map<UUID, Product> store = new ConcurrentHashMap<>();
 
@@ -21,8 +21,9 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public List<Product> search(String query) {
         return store.values().stream()
-                .filter(p -> p.getName().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
+                .filter(p -> p.getName().toLowerCase().contains(query.toLowerCase())
+                        || p.getDescription().toLowerCase().contains(query.toLowerCase()))
+                .toList();
     }
 
     @Override

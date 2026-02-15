@@ -2,6 +2,7 @@ package com.mvp.core.usecase;
 
 import com.mvp.core.domain.Cart;
 import com.mvp.core.domain.CartItem;
+import com.mvp.core.domain.Money;
 import com.mvp.core.domain.Product;
 import com.mvp.core.ports.CartRepository;
 import com.mvp.core.ports.ProductRepository;
@@ -20,7 +21,7 @@ public class AddItemToCart {
     public Cart execute(UUID cartId, UUID productId, int quantity) {
         Cart cart = cartRepository.findById(cartId).orElse(new Cart(cartId));
         Product product = productRepository.findById(productId).orElseThrow();
-        cart.addItem(new CartItem(productId, quantity, product.getPrice()));
+        cart.addItem(new CartItem(productId, quantity, new Money(product.getSalePrice())));
         return cartRepository.save(cart);
     }
 }
