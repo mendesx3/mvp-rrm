@@ -1,11 +1,13 @@
 # MVP RRM
 
-Aplicação exemplo desenvolvida com Spring Boot para demonstrar um fluxo simples de **produtos** e **carrinho de compras**. A API agora possui documentação completa utilizando o Swagger/OpenAPI, totalmente escrita em português.
+Aplicação exemplo desenvolvida com Spring Boot para demonstrar um fluxo profissional de **vendas**, **financeiro (contas a pagar/receber)** e **resumo diário de negócio**.
 
 ## Tecnologias
 
 - Java 21
 - Spring Boot 3
+- Spring Data JPA
+- H2 (em memória)
 - Springdoc OpenAPI 2
 - Gradle
 
@@ -30,7 +32,7 @@ A API ficará disponível em `http://localhost:8080`.
 
 Com a aplicação em execução, acesse a interface gráfica do Swagger para explorar os endpoints e modelos de dados:
 
-```
+```text
 http://localhost:8080/swagger-ui.html
 ```
 
@@ -38,10 +40,19 @@ http://localhost:8080/swagger-ui.html
 
 - `POST /products` – cria um novo produto.
 - `GET /products?q=term` – busca produtos pelo nome ou descrição.
-- `POST /carts` – cria um novo carrinho de compras.
-- `GET /carts/{id}` – consulta um carrinho existente.
-- `POST /carts/{id}/items` – adiciona itens ao carrinho.
-- `POST /carts/{id}/checkout` – finaliza o carrinho e gera um pedido.
+- `POST /financial` – cria lançamento financeiro manual.
+- `POST /sales` – processa uma venda completa (estoque + financeiro).
+- `GET /dashboard/daily-summary?date=YYYY-MM-DD` – retorna indicadores do dia.
+
+## Seed inicial (dados de demonstração)
+
+Ao subir a aplicação, um seed automático é executado **somente se o banco estiver vazio**, criando:
+
+- 3 produtos: `Camiseta`, `Calça`, `Tênis`.
+- 1 cliente: `Consumidor Padrão`.
+- 1 fornecedor: `Fornecedor Central`.
+- 1 conta a pagar: `Aluguel` com vencimento em 5 dias.
+
+> O seed está em `infrastructure.configuration.DataSeedConfiguration`.
 
 Consulte a documentação Swagger para descrições detalhadas de parâmetros e modelos utilizados.
-

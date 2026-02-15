@@ -37,4 +37,24 @@ public class UseCaseConfig {
     public CheckoutCart checkoutCart(CartRepository cartRepository, OrderRepository orderRepository, InventoryGateway inventoryGateway) {
         return new CheckoutCart(cartRepository, orderRepository, inventoryGateway);
     }
+
+    @Bean
+    public CreateFinancialEntryUseCase createFinancialEntryUseCase(FinancialRepository financialRepository,
+                                                                   ContactRepository contactRepository) {
+        return new CreateFinancialEntryUseCase(financialRepository, contactRepository);
+    }
+
+    @Bean
+    public ProcessSaleUseCase processSaleUseCase(SaleRepository saleRepository,
+                                                 ProductRepository productRepository,
+                                                 ContactRepository contactRepository,
+                                                 FinancialRepository financialRepository) {
+        return new ProcessSaleUseCase(saleRepository, productRepository, contactRepository, financialRepository);
+    }
+
+    @Bean
+    public GetDailySummaryUseCase getDailySummaryUseCase(SaleRepository saleRepository,
+                                                         FinancialRepository financialRepository) {
+        return new GetDailySummaryUseCase(saleRepository, financialRepository);
+    }
 }

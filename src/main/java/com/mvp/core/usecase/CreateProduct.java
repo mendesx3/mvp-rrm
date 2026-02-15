@@ -1,6 +1,5 @@
 package com.mvp.core.usecase;
 
-import com.mvp.core.domain.Money;
 import com.mvp.core.domain.Product;
 import com.mvp.core.ports.ProductRepository;
 
@@ -14,8 +13,12 @@ public class CreateProduct {
         this.repository = repository;
     }
 
-    public Product execute(String name, String description, BigDecimal price, UUID categoryId, int stock) {
-        Product product = new Product(UUID.randomUUID(), name, description, new Money(price), categoryId, stock);
+    public Product execute(String name,
+                           String description,
+                           BigDecimal costPrice,
+                           BigDecimal salePrice,
+                           Integer stockQuantity) {
+        Product product = new Product(UUID.randomUUID(), name, description, costPrice, salePrice, stockQuantity);
         return repository.save(product);
     }
 }
