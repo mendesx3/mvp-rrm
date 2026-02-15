@@ -36,6 +36,12 @@ Com a aplicação em execução, acesse a interface gráfica do Swagger para exp
 http://localhost:8080/swagger-ui.html
 ```
 
+## Guia de integração para Front-end
+
+Para integração rápida do front-end com os endpoints, payloads e tratamento de erros, consulte:
+
+- `docs/integracao-frontend.md`
+
 ## Endpoints principais
 
 - `POST /products` – cria um novo produto.
